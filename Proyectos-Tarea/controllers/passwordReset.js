@@ -5,7 +5,7 @@ import { sendResetEmail } from "../services/emailService.js";
 import bcrypt from "bcryptjs";
 
 export const requestReset = async (req, res) => {
-  try {
+  // try {
     const { email } = req.body;
     
     const user = await User.findOne({ email });
@@ -16,27 +16,25 @@ export const requestReset = async (req, res) => {
       });
     }
 
-    // Usamos tu función generarJWT para crear el token
-    const token = await generarJWT(user._id);
-    
-    await PasswordResetToken.create({ 
-      email, 
-      token,
-      expiresAt: new Date(Date.now() + 3600000) // 1 hora
-    });
 
-    await sendResetEmail(email, token);
+    // Usamos tu función generarJWT para crear el token
+    
+    
+    
+    await sendResetEmail(email);
+
+   
     
     res.status(200).json({ 
       success: true,
       message: 'Correo de recuperación enviado' 
     });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false,
-      message: error.message 
-    });
-  }
+  // } catch (error) {
+  //   res.status(500).json({ 
+  //     success: false,
+  //     message: error.message 
+  //   });
+  // }
 };
 
 export const resetPassword = async (req, res) => {

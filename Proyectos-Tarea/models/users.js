@@ -14,7 +14,9 @@ const usersSchema = new mongoose.Schema({
     isEmailVerified: {type: Boolean, required: true, default: false},
     lastLogin: {type: Date},
     createdAt: {type: Date, default: new Date()},
-    updatedAt: {type: Date, default: new Date()}
+    updatedAt: {type: Date, default: new Date()},
+    token: {type: String},
+    resetCodeExpires:{type: Date, default: new Date()},
 })
 
 export default mongoose.model("Users", usersSchema)

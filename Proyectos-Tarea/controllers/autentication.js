@@ -2,6 +2,7 @@ import users from "../models/users.js";
 import Role from '../models/roles.js';
 import bcryptjs from "bcryptjs";
 import { generarJWT } from "../middlewares/validar-jwt.js"; // Función que genere un JWT
+import { getLogger } from "nodemailer/lib/shared/index.js";
 
 const AuthController ={
     register: async (req, res)=>{
@@ -248,7 +249,9 @@ const AuthController ={
                 return res.status(400).json({ msg: "Usuario no encontrado" });
             }
             // Aquí se generaría un token o link para restablecer contraseña
+            const Usuario = await users.findByIdAndUpdate()
             // y se enviaría un correo a usuario.email
+
             res.json({ msg: "Correo para restablecer contraseña enviado" });
         } catch (error) {
             res.status(500).json({ msg: "Error al procesar la solicitud" });

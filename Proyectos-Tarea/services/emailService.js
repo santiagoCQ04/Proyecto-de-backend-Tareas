@@ -2,7 +2,7 @@ import users from '../models/users.js';
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  service: 'smtp.gmail.com',
+  host: 'smtp.gmail.com',
   port: 465,
   secure: true,
   auth: {
@@ -18,22 +18,23 @@ const generateResetCode = () => {
 
 export const sendResetEmail = async (email) => {
 
-  // const code = generateResetCode();
-  // // guardamos el código en la BD
-  // await users.findOneAndUpdate(
-  //   { email },
-  //   { token: code, resetCodeExpires: Date.now() + 10 * 60 * 1000 }
-  // );
+  const code = generateResetCode();
+  // guardamos el código en la BD
+  await users.findOneAndUpdate(
+    { email },
+    { token: code, resetCodeExpires: Date.now() + 10 * 60 * 1000 }
+  );
 
   console.log(process.env.EMAIL_USER);
   console.log(email);
+  console.log(code)
   
   const options = () => {
     return {
       from: process.env.EMAIL_USER,
-      to: "migueldulceyd@gmail.com",
-      subject: "prueba",
-      text: "holahola",
+      to: email,
+      subject: "correo de confirmación",
+      html: `codigo de recuperación ${code}`,
     };
   };
 
@@ -42,6 +43,7 @@ export const sendResetEmail = async (email) => {
 
     
     if (error) {
+console.log(error);
 
       return error;
     } else {
